@@ -1,5 +1,5 @@
 {
-    "name": "bordeux/websocket-bundle",
+    "name": "stsykalovskyi/websocket-bundle",
     "type": "symfony-bundle",
     "description": "Symfony 3 Websocket bundle",
     "keywords": [
