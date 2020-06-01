@@ -7,6 +7,7 @@ use Bordeux\WebsocketBundle\Websocket\Message;
 use Bordeux\WebsocketBundle\Websocket\WebsocketInterface;
 use Guzzle\Http\Message\Header;
 use GuzzleHttp\Message\Request as RequestGuzzle;
+use Psr\Log\LoggerInterface;
 use Ratchet\ConnectionInterface;
 use Ratchet\MessageComponentInterface;
 use React\EventLoop\LoopInterface;
@@ -22,42 +23,38 @@ use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 
-
 class ConnectionManager implements MessageComponentInterface
 {
-    use ContainerAwareTrait;
-
     /**
      * @var SplObjectStorage
      */
     protected $clients;
-
 
     /**
      * @var RouteCollection|Route[]
      */
     protected $routes;
 
-
     /**
      * @var OutputInterface
      */
     protected $output;
-
 
     /**
      * @var LoopInterface
      */
     protected $loop;
 
+    private $logger;
+
     /**
      * ConnectionManager constructor.
      * @author Krzysztof Bednarczyk
      */
-    public function __construct(ContainerInterface $container)
+    public function __construct(LoggerInterface $wsLogger)
     {
-        $this->setContainer($container);
-        $this->clients = new SplObjectStorage();
+        $this->clients  = new SplObjectStorage();
+        $this->logger   = $wsLogger;
     }
 
     /**
@@ -81,7 +78,6 @@ class ConnectionManager implements MessageComponentInterface
         $this->routes = $routes;
         return $this;
     }
-
 
     /**
      * When a new connection is opened it will be passed to this method
@@ -116,7 +112,6 @@ class ConnectionManager implements MessageComponentInterface
             $this->handleException($e);
         }
     }
-
 
     /**
      * This is called before or after a socket is closed (depends on how it's closed).  SendMessage to $conn will not result in an error if it has already been closed.
@@ -170,8 +165,6 @@ class ConnectionManager implements MessageComponentInterface
      */
     function onMessage(ConnectionInterface $conn, $msg)
     {
-
-        $this->output->writeln("New message: |{$msg}|");
         if ($msg == "ping") {
             $conn->send("pong");
             return;
@@ -213,7 +206,6 @@ class ConnectionManager implements MessageComponentInterface
         return $this->output;
     }
 
-
     /**
      * Get loop value
      * @author Krzysztof Bednarczyk
@@ -236,7 +228,6 @@ class ConnectionManager implements MessageComponentInterface
         return $this;
     }
 
-
     /**
      * @author Krzysztof Bednarczyk
      * @param ConnectionInterface $conn
@@ -244,30 +235,33 @@ class ConnectionManager implements MessageComponentInterface
      */
     public function createRequest(ConnectionInterface $conn)
     {
-        /** @var RequestGuzzle $requestOrg */
-        $requestOrg = $conn->WebSocket->request;
-        parse_str($requestOrg->getQuery(), $query);
+        /** @var \GuzzleHttp\Psr7\Request $requestOrg */
+        $requestOrg = $conn->httpRequest;
+        parse_str($requestOrg->getUri()->getQuery(), $query);
         $server = [
-            'SERVER_NAME' => $requestOrg->getHost(),
-            'REMOTE_ADDR' => $conn->remoteAddress,
-            'REQUEST_SCHEME' => $requestOrg->getScheme(),
-            'REQUEST_URI' => $requestOrg->getResource(),
+            'SERVER_NAME'       => $requestOrg->getUri()->getHost(),
+            'REMOTE_ADDR'       => $conn->remoteAddress,
+            'REQUEST_SCHEME'    => $requestOrg->getUri()->getScheme(),
+            'REQUEST_URI'       => (string)$requestOrg->getUri(),
         ];
 
 
         /** @var Header $item */
-        foreach ($requestOrg->getHeaders() as $item) {
-            $server[strtoupper("http_{$item->getName()}")] = $item->__toString();
+        foreach ($requestOrg->getHeaders() as $key => $item) {
+            $server[strtoupper("http_{$key}")] = $item[0];
         }
 
 
         $cookies = [];
-        foreach (explode(";", $requestOrg->getHeader("Cookie")) as $item) {
-            if (!($item = trim($item))) {
-                continue;
+        if ($requestOrg->hasHeader('Cookies')) {
+            $headerCookie =  $requestOrg->getHeader("Cookie");
+            foreach (explode(";", $headerCookie) as $item) {
+                if (!($item = trim($item))) {
+                    continue;
+                }
+                list($name, $value) = explode("=", trim($item));
+                $cookies[$name] = urldecode($value);
             }
-            list($name, $value) = explode("=", trim($item));
-            $cookies[$name] = urldecode($value);
         }
 
         return new Request(
@@ -281,7 +275,6 @@ class ConnectionManager implements MessageComponentInterface
         );
 
     }
-
 
     /**
      * @author Krzysztof Bednarczyk
@@ -310,5 +303,4 @@ class ConnectionManager implements MessageComponentInterface
         $this->getOutput()->writeln($exception->getTraceAsString());
         return $this;
     }
-
 }

@@ -9,9 +9,8 @@
 namespace Bordeux\WebsocketBundle\Service;
 
 use Bordeux\WebsocketBundle\Websocket\Websocket;
+use JMS\Serializer\SerializerInterface;
 use React\EventLoop\LoopInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareTrait;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Routing\Route;
@@ -24,14 +23,6 @@ use Symfony\Component\Routing\RouteCollection;
  */
 class RoutingManager
 {
-    use ContainerAwareTrait;
-
-
-    /**
-     * @var Kernel
-     */
-    protected $kernel;
-
     /**
      * @var string
      */
@@ -47,47 +38,19 @@ class RoutingManager
      */
     protected $connectionManager;
 
+    /** @var iterable | Websocket[] */
+    private $controllers;
+    /** @var string */
+    private $projectDir;
+
     /**
      * RoutingManager constructor.
      * @author Krzysztof Bednarczyk
      */
-    public function __construct(ContainerInterface $container)
+    public function __construct(iterable $controllers, string $projectDir)
     {
-        $this->setContainer($container);
-        $this->kernel = $this->container->get("kernel");
-    }
-
-
-    /**
-     * @author Krzysztof Bednarczyk
-     * @return string[]
-     */
-    public function findWebsocketClasses()
-    {
-        $dirs = array();
-        foreach ($this->kernel->getBundles() as $bundle) {
-            if (in_array($bundle->getName(), $this->blackListedBundles)) {
-                continue;
-            }
-
-            if (!is_dir($websocketDir = $bundle->getPath() . '/Websocket')) {
-                continue;
-            }
-            $dirs[] = $websocketDir;
-        }
-
-        foreach (Finder::create()->name('*Websocket.php')->in($dirs)->files() as $file) {
-            $filename = $file->getRealPath();
-            if (!in_array($filename, $this->blackListedWebsocketFiles)) {
-                require_once $filename;
-            }
-        }
-        // It is not so important if these controllers never can be reached with
-        // the current configuration nor whether they are actually controllers.
-        // Important is only that we do not miss any classes.
-        return array_filter(get_declared_classes(), function ($name) {
-            return preg_match('/Websocket\\\(.+)Websocket$/', $name) > 0;
-        });
+        $this->controllers = $controllers;
+        $this->projectDir = $projectDir;
     }
 
 
@@ -97,28 +60,19 @@ class RoutingManager
      */
     public function findRoutes()
     {
-        $classes = $this->findWebsocketClasses();
-
         $allRoutes = new RouteCollection();
 
-        foreach ($classes as $class) {
-            /** @var Websocket $instance */
-            $instance = new $class(
-                $this->getConnectionManager(),
-                $this->container
-            );
-
-
+        foreach ($this->controllers as $controller) {
             /** @var Route[]|RouteCollection $routes */
             $routes = new RouteCollection();
-            $instance->configureRoutes($routes);
+            $controller->configureRoutes($routes);
 
             foreach ($routes as $route) {
-                $route->setDefault("_websocket", $instance);
+                $route->setDefault("_websocket", $controller);
             }
             $allRoutes->addCollection($routes);
 
-            $instance->run();
+            $controller->run();
         }
 
         return $allRoutes;

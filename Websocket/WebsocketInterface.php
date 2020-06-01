@@ -10,6 +10,7 @@ namespace Bordeux\WebsocketBundle\Websocket;
 
 
 use Bordeux\WebsocketBundle\Service\ConnectionManager;
+use JMS\Serializer\SerializerInterface;
 use React\EventLoop\LoopInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Routing\RouteCollection;
@@ -20,16 +21,6 @@ use Symfony\Component\Routing\RouteCollection;
  */
 interface WebsocketInterface
 {
-
-    /**
-     * WebsocketInterface constructor.
-     * @author Krzysztof Bednarczyk
-     * @param ConnectionManager $connectionManager
-     * @param ContainerInterface $container
-     */
-    public function __construct(ConnectionManager $connectionManager, ContainerInterface $container);
-
-
     /**
      * @author Krzysztof Bednarczyk
      * @return mixed

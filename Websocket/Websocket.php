@@ -8,11 +8,9 @@
 
 namespace Bordeux\WebsocketBundle\Websocket;
 
-
 use Bordeux\WebsocketBundle\Service\ConnectionManager;
 use React\EventLoop\LoopInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareTrait;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use JMS\Serializer\SerializerInterface;
 
 /**
  * Class Websocket
@@ -21,18 +19,14 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 abstract class Websocket implements WebsocketInterface
 {
-    use ContainerAwareTrait;
-
     /**
      * @var ConnectionManager
      */
     protected $connectionManager;
 
-
-    public function __construct(ConnectionManager $connectionManager, ContainerInterface $container)
+    public function __construct(ConnectionManager $connectionManager)
     {
         $this->setConnectionManager($connectionManager);
-        $this->setContainer($container);
     }
 
     /**
@@ -57,53 +51,6 @@ abstract class Websocket implements WebsocketInterface
         return $this;
     }
 
-
-    /**
-     * @author Krzysztof Bednarczyk
-     */
-    public function getDoctrine()
-    {
-        return $this->container->get("doctrine");
-    }
-
-
-    /**
-     * Gets a container service by its id.
-     *
-     * @param string $id The service id
-     *
-     * @return object The service
-     */
-    public function get($id)
-    {
-        return $this->container->get($id);
-    }
-
-    /**
-     * Returns true if the service id is defined.
-     *
-     * @param string $id The service id
-     *
-     * @return bool true if the service id is defined, false otherwise
-     */
-    public function has($id)
-    {
-        return $this->container->has($id);
-    }
-
-    /**
-     * Gets a container configuration parameter by its name.
-     *
-     * @param string $name The parameter name
-     *
-     * @return mixed
-     */
-    protected function getParameter($name)
-    {
-        return $this->container->getParameter($name);
-    }
-
-
     /**
      * @author Krzysztof Bednarczyk
      * @return LoopInterface
@@ -114,22 +61,16 @@ abstract class Websocket implements WebsocketInterface
     }
 
     /**
-     * Get container value
-     * @author Krzysztof Bednarczyk
-     * @return ContainerInterface
-     */
-    public function getContainer()
-    {
-        return $this->container;
-    }
-
-
-    /**
      * @author Krzysztof Bednarczyk
      * @return \Symfony\Component\Console\Output\OutputInterface
      */
     public function getOutput()
     {
         return $this->connectionManager->getOutput();
+    }
+
+    public function getSerializer()
+    {
+        return $this->serializer;
     }
 }
