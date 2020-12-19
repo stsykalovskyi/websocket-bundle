@@ -5,13 +5,13 @@ Simple and great websocket manager.
 ## Installation
 
 ```
-composer require bordeux/websocket-bundle
+composer require stsykalovskyi/websocket-bundle
 ```
 
 ## Run
 
 ```
-php app/console bordeux:websocket:bundle
+php app/console websocket:bundle
 ```
 
 ## Edit Appkernel
@@ -21,7 +21,7 @@ php app/console bordeux:websocket:bundle
     {
         $bundles = array(
 			...
-            new Bordeux\WebsocketBundle\BordeuxWebsocketBundle(),
+            new App\WebsocketBundle\WebsocketBundle(),
 			....
         );
 
@@ -40,16 +40,15 @@ php app/console bordeux:websocket:bundle
 
 namespace Tattool\Bundle\MessagesBundle\Websocket;
 
-use Bordeux\WebsocketBundle\Websocket\Client;
-use Bordeux\WebsocketBundle\Websocket\Message;
-use Bordeux\WebsocketBundle\Websocket\Websocket;
+use App\WebsocketBundle\Websocket\Client;
+use App\WebsocketBundle\Websocket\Message;
+use App\WebsocketBundle\Websocket\Websocket;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 
 /**
  * Class SimpleWebsocket
- * @author Krzysztof Bednarczyk
  * @package Tattool\Bundle\MessagesBundle\Websocket
  */
 class SimpleWebsocket extends Websocket
@@ -57,7 +56,6 @@ class SimpleWebsocket extends Websocket
 
 
     /**
-     * @author Krzysztof Bednarczyk
      * @param RouteCollection $collection
      */
     public function configureRoutes(RouteCollection $collection)
@@ -74,7 +72,6 @@ class SimpleWebsocket extends Websocket
 
 
     /**
-     * @author Krzysztof Bednarczyk
      * @param Client $client
      * @return void
      */
@@ -105,7 +102,6 @@ class SimpleWebsocket extends Websocket
     }
 
     /**
-     * @author Krzysztof Bednarczyk
      * @param Client $client
      * @return void
      */
@@ -115,7 +111,6 @@ class SimpleWebsocket extends Websocket
     }
 
     /**
-     * @author Krzysztof Bednarczyk
      * @param Client $client
      * @param Message $message
      * @return void
@@ -129,7 +124,6 @@ class SimpleWebsocket extends Websocket
     }
 
     /**
-     * @author Krzysztof Bednarczyk
      * @param Client $client
      * @return void
      */
@@ -138,7 +132,6 @@ class SimpleWebsocket extends Websocket
     }
 
     /**
-     * @author Krzysztof Bednarczyk
      * @return mixed
      */
     public function run()
@@ -160,7 +153,7 @@ class SimpleWebsocket extends Websocket
 
 ## Configuration init.d
 
-1. Edit  [sf-websocket.sh](https://github.com/bordeux/websocket-bundle/blob/master/Resources/init.d/sf-websocket.sh) from Resources/init.d
+1. Edit  [sf-websocket.sh](https://github.com/stsykalovskyi/websocket-bundle/blob/master/Resources/init.d/sf-websocket.sh) from Resources/init.d
 2. Execute as root:
 ```bash
 cp <your-path>/init.d/sf-websocket.sh /etc/init.d/sf-websocket
@@ -234,7 +227,3 @@ connection.onmessage = function (e) {
 
 ## !?!?!??!?! PROFIT !?!?!??!?!?
 
-
-
-Sponsors:
-[Kursy pierwszej pomocy - Katowice](https://www.p-med.pl/)

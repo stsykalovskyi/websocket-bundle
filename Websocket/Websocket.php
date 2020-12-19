@@ -1,21 +1,14 @@
 <?php
-/**
- * @author Krzysztof Bednarczyk
- * User: devno
- * Date: 26.02.2016
- * Time: 11:52
- */
 
-namespace Bordeux\WebsocketBundle\Websocket;
+namespace App\WebsocketBundle\Websocket;
 
-use Bordeux\WebsocketBundle\Service\ConnectionManager;
+use App\WebsocketBundle\Service\ConnectionManager;
 use React\EventLoop\LoopInterface;
 use JMS\Serializer\SerializerInterface;
 
 /**
  * Class Websocket
- * @author Krzysztof Bednarczyk
- * @package Bordeux\WebsocketBundle\Websocket
+ * @package App\WebsocketBundle\Websocket
  */
 abstract class Websocket implements WebsocketInterface
 {
@@ -31,7 +24,6 @@ abstract class Websocket implements WebsocketInterface
 
     /**
      * Get connectionManager value
-     * @author Krzysztof Bednarczyk
      * @return ConnectionManager
      */
     public function getConnectionManager()
@@ -41,7 +33,6 @@ abstract class Websocket implements WebsocketInterface
 
     /**
      * Set connectionManager value
-     * @author Krzysztof Bednarczyk
      * @param ConnectionManager $connectionManager
      * @return  $this
      */
@@ -52,7 +43,6 @@ abstract class Websocket implements WebsocketInterface
     }
 
     /**
-     * @author Krzysztof Bednarczyk
      * @return LoopInterface
      */
     public function getLoop()
@@ -61,7 +51,6 @@ abstract class Websocket implements WebsocketInterface
     }
 
     /**
-     * @author Krzysztof Bednarczyk
      * @return \Symfony\Component\Console\Output\OutputInterface
      */
     public function getOutput()

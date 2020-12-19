@@ -8,7 +8,6 @@
 # Short-Description: Symfony Websocket server
 # Description:       Symfony2 Websocket server
 # Processname:       sf-websocket
-# Author:			 Krzysztof Bednarczyk <krzysztof@bednarczyk.me>
 ### END INIT INFO
 
 

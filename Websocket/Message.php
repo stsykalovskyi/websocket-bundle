@@ -1,17 +1,10 @@
 <?php
-/**
- * @author Krzysztof Bednarczyk
- * User: devno
- * Date: 26.02.2016
- * Time: 12:44
- */
 
-namespace Bordeux\WebsocketBundle\Websocket;
+namespace App\WebsocketBundle\Websocket;
 
 /**
  * Class Message
- * @author Krzysztof Bednarczyk
- * @package Bordeux\WebsocketBundle\Websocket
+ * @package App\WebsocketBundle\Websocket
  */
 class Message
 {
@@ -22,7 +15,6 @@ class Message
 
     /**
      * Message constructor.
-     * @author Krzysztof Bednarczyk
      * @param string $content
      */
     public function __construct($content = null)
@@ -33,7 +25,6 @@ class Message
 
     /**
      * Get content value
-     * @author Krzysztof Bednarczyk
      * @return null|string
      */
     public function getContent()
@@ -43,7 +34,6 @@ class Message
 
     /**
      * Set content value
-     * @author Krzysztof Bednarczyk
      * @param null|string $content
      * @return  $this
      */

@@ -1,6 +1,6 @@
 <?php
-namespace Bordeux\WebsocketBundle\Console;
 
+namespace App\WebsocketBundle\Console;
 
 use Ratchet\Http\HttpServer;
 use Ratchet\Server\IoServer;
@@ -12,18 +12,14 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Class StartCommand
- * @author Krzysztof Bednarczyk
- * @package Bordeux\WebsocketBundle\Console
+ * @package App\WebsocketBundle\Console
  */
 class StartCommand extends ContainerAwareCommand
 {
-    /**
-     * @author Krzysztof Bednarczyk
-     */
     protected function configure()
     {
         $this
-            ->setName('bordeux:websocket:start')
+            ->setName('websocket:start')
             ->setDescription('Start websocket server')
             ->addOption(
                 'port',

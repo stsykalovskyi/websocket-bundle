@@ -1,14 +1,8 @@
 <?php
-/**
- * @author Krzysztof Bednarczyk
- * User: devno
- * Date: 26.02.2016
- * Time: 10:20
- */
 
-namespace Bordeux\WebsocketBundle\Service;
+namespace App\WebsocketBundle\Service;
 
-use Bordeux\WebsocketBundle\Websocket\Websocket;
+use App\WebsocketBundle\Websocket\Websocket;
 use JMS\Serializer\SerializerInterface;
 use React\EventLoop\LoopInterface;
 use Symfony\Component\Finder\Finder;
@@ -18,8 +12,7 @@ use Symfony\Component\Routing\RouteCollection;
 
 /**
  * Class RoutingManager
- * @author Krzysztof Bednarczyk
- * @package Bordeux\WebsocketBundle\Service
+ * @package App\WebsocketBundle\Service
  */
 class RoutingManager
 {
@@ -45,7 +38,6 @@ class RoutingManager
 
     /**
      * RoutingManager constructor.
-     * @author Krzysztof Bednarczyk
      */
     public function __construct(iterable $controllers, string $projectDir)
     {
@@ -55,7 +47,6 @@ class RoutingManager
 
 
     /**
-     * @author Krzysztof Bednarczyk
      * @return RouteCollection|Route[]
      */
     public function findRoutes()
@@ -80,7 +71,6 @@ class RoutingManager
 
     /**
      * Get connectionManager value
-     * @author Krzysztof Bednarczyk
      * @return ConnectionManager
      */
     public function getConnectionManager()
@@ -90,7 +80,6 @@ class RoutingManager
 
     /**
      * Set connectionManager value
-     * @author Krzysztof Bednarczyk
      * @param ConnectionManager $connectionManager
      * @return  $this
      */

@@ -1,15 +1,14 @@
 <?php
 
-namespace Bordeux\WebsocketBundle\Websocket;
+namespace App\WebsocketBundle\Websocket;
 
+use Ratchet\Server\IoServer;
 use Symfony\Component\HttpFoundation\Request;
 use Ratchet\ConnectionInterface;
 
-
 /**
  * Class Client
- * @author Krzysztof Bednarczyk
- * @package Bordeux\WebsocketBundle\Websocket
+ * @package App\WebsocketBundle\Websocket
  */
 class Client
 {
@@ -20,6 +19,7 @@ class Client
      * @var string
      */
     protected $id;
+
 
 
     /**
@@ -33,7 +33,7 @@ class Client
     /**
      * Connection from Ratchet
      *
-     * @var \Ratchet\Server\IoServer
+     * @var IoServer
      */
     protected $connection;
 
@@ -47,8 +47,9 @@ class Client
 
     /**
      * Client constructor.
-     * @author Krzysztof Bednarczyk
      * @param string $id
+     * @param ConnectionInterface $connection
+     * @param WebsocketInterface $websocket
      * @param Request $request
      */
     public function __construct($id, ConnectionInterface $connection, WebsocketInterface $websocket, Request $request)
@@ -62,7 +63,6 @@ class Client
 
     /**
      * Get id value
-     * @author Krzysztof Bednarczyk
      * @return int
      */
     public function getId()
@@ -72,7 +72,6 @@ class Client
 
     /**
      * Get request value
-     * @author Krzysztof Bednarczyk
      * @return Request
      */
     public function getRequest()
@@ -81,7 +80,6 @@ class Client
     }
 
     /**
-     * @author Krzysztof Bednarczyk
      * @param Message $message
      * @return mixed
      */
@@ -95,7 +93,6 @@ class Client
 
     /**
      * Get websocket value
-     * @author Krzysztof Bednarczyk
      * @return Websocket
      */
     public function getWebsocket()
@@ -105,7 +102,6 @@ class Client
 
 
     /**
-     * @author Krzysztof Bednarczyk
      * @return bool
      */
     public function kill(){

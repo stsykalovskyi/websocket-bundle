@@ -1,6 +1,6 @@
 <?php
 
-namespace Bordeux\WebsocketBundle\DependencyInjection;
+namespace App\WebsocketBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;

@@ -1,10 +1,10 @@
 <?php
 
-namespace Bordeux\WebsocketBundle\Service;
+namespace App\WebsocketBundle\Service;
 
-use Bordeux\WebsocketBundle\Websocket\Client;
-use Bordeux\WebsocketBundle\Websocket\Message;
-use Bordeux\WebsocketBundle\Websocket\WebsocketInterface;
+use App\WebsocketBundle\Websocket\Client;
+use App\WebsocketBundle\Websocket\Message;
+use App\WebsocketBundle\Websocket\WebsocketInterface;
 use Guzzle\Http\Message\Header;
 use GuzzleHttp\Message\Request as RequestGuzzle;
 use Psr\Log\LoggerInterface;
@@ -23,6 +23,10 @@ use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 
+/**
+ * Class ConnectionManager
+ * @package App\WebsocketBundle\Service
+ */
 class ConnectionManager implements MessageComponentInterface
 {
     /**
@@ -49,7 +53,6 @@ class ConnectionManager implements MessageComponentInterface
 
     /**
      * ConnectionManager constructor.
-     * @author Krzysztof Bednarczyk
      */
     public function __construct(LoggerInterface $wsLogger)
     {
@@ -59,7 +62,6 @@ class ConnectionManager implements MessageComponentInterface
 
     /**
      * Get routes value
-     * @author Krzysztof Bednarczyk
      * @return \Symfony\Component\Routing\Route[]|RouteCollection
      */
     public function getRoutes()
@@ -69,7 +71,6 @@ class ConnectionManager implements MessageComponentInterface
 
     /**
      * Set routes value
-     * @author Krzysztof Bednarczyk
      * @param \Symfony\Component\Routing\Route[]|RouteCollection $routes
      * @return  $this
      */
@@ -186,7 +187,6 @@ class ConnectionManager implements MessageComponentInterface
 
     /**
      * Set output value
-     * @author Krzysztof Bednarczyk
      * @param OutputInterface $output
      * @return  $this
      */
@@ -198,7 +198,6 @@ class ConnectionManager implements MessageComponentInterface
 
     /**
      * Get output value
-     * @author Krzysztof Bednarczyk
      * @return OutputInterface
      */
     public function getOutput()
@@ -208,7 +207,6 @@ class ConnectionManager implements MessageComponentInterface
 
     /**
      * Get loop value
-     * @author Krzysztof Bednarczyk
      * @return LoopInterface
      */
     public function getLoop()
@@ -218,7 +216,6 @@ class ConnectionManager implements MessageComponentInterface
 
     /**
      * Set loop value
-     * @author Krzysztof Bednarczyk
      * @param LoopInterface $loop
      * @return  $this
      */
@@ -229,7 +226,6 @@ class ConnectionManager implements MessageComponentInterface
     }
 
     /**
-     * @author Krzysztof Bednarczyk
      * @param ConnectionInterface $conn
      * @return Request
      */
@@ -277,7 +273,6 @@ class ConnectionManager implements MessageComponentInterface
     }
 
     /**
-     * @author Krzysztof Bednarczyk
      * @param \Exception $exception
      * @return $this
      */

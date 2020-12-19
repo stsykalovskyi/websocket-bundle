@@ -1,14 +1,14 @@
 services:
-    bordeux.websocket.service.connection.manager:
+    app.websocket.service.connection.manager:
         public: true
-        class: Bordeux\WebsocketBundle\Service\ConnectionManager
+        class: App\WebsocketBundle\Service\ConnectionManager
         arguments:    ['@service_container']
 
-    bordeux.websocket.service.routing.manager:
-        class: Bordeux\WebsocketBundle\Service\RoutingManager
+    app.websocket.service.routing.manager:
+        class: App\WebsocketBundle\Service\RoutingManager
         arguments:    ['@service_container']
 
-    bordeux.websocket.console.start:
-        class: Bordeux\WebsocketBundle\Console\StartCommand
+    app.websocket.console.start:
+        class: App\WebsocketBundle\Console\StartCommand
         tags:
             -  { name: console.command }
